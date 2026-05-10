@@ -223,7 +223,7 @@ export default function Home() {
               ))}
             </div>
 
-            <p>"{r.text}"</p>
+            <p>{r.text}</p>
 
             <div className="text-xs opacity-80 mt-auto">
               {r.author}
