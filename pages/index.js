@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import OrbitingCircles from '@/components/OrbitingCircles';
 import { motion } from 'framer-motion';
 import { FaLightbulb, FaUsers, FaRocket, FaCheckCircle, FaBookOpen, FaHeart } from 'react-icons/fa';
 import Link from "next/link";
