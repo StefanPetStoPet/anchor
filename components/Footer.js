@@ -76,13 +76,13 @@ export default function Footer() {
       <div className="relative z-10 max-w-6xl mx-auto mt-14 md:mt-20 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm gap-4">
 
         <div className="text-center md:text-left">
-          +382 XX XXX XXX
+          +382 80 233 1921
         </div>
 
         <div className="flex gap-6">
-          <a href="#" className="hover:text-white/70 transition">Instagram</a>
-          <a href="#" className="hover:text-white/70 transition">LinkedIn</a>
-          <a href="#" className="hover:text-white/70 transition">Email</a>
+          <a className="hover:text-white/70 transition">Instagram</a>
+          <a className="hover:text-white/70 transition">LinkedIn</a>
+          <a className="hover:text-white/70 transition">Email</a>
         </div>
 
       </div>

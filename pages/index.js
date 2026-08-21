@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import { FaLightbulb, FaUsers, FaRocket, FaCheckCircle, FaBookOpen, FaHeart } from 'react-icons/fa';
 import Link from "next/link";
 import { Icon } from "@iconify/react";
@@ -48,17 +48,41 @@ const reviews = [
     author: "Captain, International Vessel",
   },
   {
-    text: "Connectivity works exactly where others fail. Our crews finally stay connected worldwide.",
-    author: "Operations Lead, Maritime Group",
-  },
-  {
-    text: "Their coordination and responsiveness are unmatched in the industry.",
-    author: "Captain, International Vessel",
-  },
+  text: "From last-minute port requirements to supplier coordination, their team keeps everything moving without unnecessary delays.",
+  author: "Port Operations Coordinator, Meridian Marine Logistics",
+},
 ];
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+
+
+
+  const rotatingWords = [
+  "free time",
+  "smooth operations",
+  "global coverage",
+  "crew coordination",
+  "fleet efficiency",
+];
+
+const [wordIndex, setWordIndex] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
+
+const longestWord = rotatingWords.reduce(
+  (longest, word) =>
+    word.length > longest.length ? word : longest,
+  ""
+);
+
+
 
   useEffect(() => {
     // Initialize dark mode from localStorage or system preference
@@ -89,67 +113,288 @@ export default function Home() {
       <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
 
       <section
-  className={`relative min-h-[100vh] md:min-h-screen flex items-center justify-center pt-16 overflow-hidden ${
+  className={`relative min-h-[100vh] md:min-h-screen flex  overflow-hidden ${
     darkMode ? 'bg-black' : 'bg-black'
   }`}
 >
   {/* 🎥 VIDEO BACKGROUND */}
-  <video
-    className="absolute top-0 left-0 w-full h-full object-cover"
-    autoPlay
-    muted
-    loop
-    playsInline
-  >
-<source src="/videos/shipVid222.mp4" type="video/mp4" />
-  </video>
+  <img
+  src="/images/marina2.png"
+  alt="Marina"
+  className="absolute top-0 left-0 w-full h-full object-cover"
+/>
 
   {/* 🌑 DARK OVERLAY (luxury cinematic look) */}
-  <div className="absolute inset-0 bg-black/25"></div>
+  <div className="absolute inset-0 bg-blue-300/1"></div>
 
   {/* CONTENT */}
-  <div className="relative z-10 w-[90%] md:w-4/5 text-center">
+<div
+  className="relative z-10 w-full text-left px-6 md:px-12 lg:px-16"
+  style={{
+    paddingTop: 'clamp(90px, 20vh, 190px)',
+  }}
+>
+  {/* H1, paragraph, CTA */}
+
 
   <h1
-    className="
-      font-[Plus_Jakarta_Sans]
-      text-3xl sm:text-4xl md:text-7xl
-      leading-tight tracking-wide
-      text-white
-    "
-    style={{
-      transform: 'scaleX(1.06)',
-      textShadow: '0 10px 30px rgba(0,0,0,0.6)',
-    }}
-  >
-    Your Base of Solutions
-  </h1>
+  className="
+    font-[Plus_Jakarta_Sans]
+    text-4xl sm:text-5xl md:text-6xl
+    leading-[1.05]
+    tracking-wide
+    text-white
+    max-w-4xl
+  "
+  style={{
+    transform: "scaleX(1.02)",
+    transformOrigin: "left",
+    textShadow: "0 10px 30px rgba(0,0,0,0.6)",
+  }}
+>
+  Finding ways to say{" "}
+  
+  <span className="font-bold">
+    yes
+  </span>{" "}
+  
+  to your{" "}
 
-  <p className="mt-3 md:mt-1 text-white/80 text-xs sm:text-sm md:text-base tracking-wide">
-    Just One Click Away
-  </p>
-
-  {/* CTA */}
-  <div className="mt-6 md:mt-10 flex justify-center">
-    <a
-      href="#contact"
+  {/* ROTATING WORDS */}
+  <span
+  className="
+    inline-block
+    relative
+    overflow-hidden
+    align-bottom
+    h-[1.1em]
+  "
+  style={{
+    width: `${longestWord.length}ch`,
+  }}
+>
+  <AnimatePresence mode="sync">
+    <motion.span
+      key={rotatingWords[wordIndex]}
+      initial={{ y: "100%" }}
+      animate={{ y: "0%" }}
+      exit={{ y: "-100%" }}
+      transition={{
+        duration: 0.6,
+        ease: [0.76, 0, 0.24, 1],
+      }}
       className="
-        inline-flex items-center justify-center
-        px-7 md:px-9 py-2.5 md:py-3
-        bg-white/90 text-black
-        uppercase text-[10px] md:text-xs tracking-[0.25em]
-        transition-all duration-500 ease-out
-        hover:bg-white
-        hover:tracking-[0.35em]
-        hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)]
-        hover:-translate-y-0.5
+        absolute
+        left-0
+        top-0
+        font-bold
+        whitespace-nowrap
       "
     >
-      Contact us
-    </a>
-  </div>
+      {rotatingWords[wordIndex]}
+    </motion.span>
+  </AnimatePresence>
+</span>
+</h1>
+
+  <p className="mt-5 max-w-xl text-white/85 text-sm sm:text-base md:text-lg leading-relaxed">
+    We handle the operational details behind the scenes, from ship supply and connectivity to crew support, keeping vessels connected, coordinated, and moving efficiently.
+  </p>
+
+  
+
+
 
 </div>
+
+{/* GOALS SECTION */}
+<div
+  className="
+    absolute bottom-0 left-0
+    z-20
+    w-full
+    min-h-[10vh]
+    px-[5%] md:px-[7%]
+    pt-0 pb-3 md:py-3
+    text-[#034545]
+    font-[Plus_Jakarta_Sans]
+  "
+  style={{
+  background:
+    'linear-gradient(90deg, #064B6D4d 0%, #07ABAB4d 100%)',
+}}
+>
+
+  {/* SECTION TITLE */}
+  <h2 className="text-white text-base md:text-xl font-[Plus_Jakarta_Sans] font-semibold mb-3">
+    What goals can we help you achieve?
+  </h2>
+
+
+  {/* CARDS */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+
+    {/* CARD 1 — GLOBAL MARITIME SUPPORT */}
+<div
+  className="
+    group
+    relative
+    overflow-hidden
+    bg-white/95
+    rounded-2xl
+    flex items-stretch
+    border border-white/60
+    shadow-[0_8px_25px_rgba(3,69,69,0.10)]
+    transition-all duration-300
+    hover:-translate-y-1
+    hover:shadow-[0_14px_30px_rgba(3,69,69,0.16)]
+  "
+>
+  {/* GREEN ACCENT LINE */}
+  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#064B6D] to-[#07ABAB]" />
+
+  {/* ICON PANEL */}
+  <div
+    className="
+      shrink-0
+      w-16 md:w-[72px]
+      bg-gradient-to-br from-[#064B6D]/10 to-[#07ABAB]/20
+      flex items-center justify-center
+      border-r border-[#07ABAB]/10
+      transition-all duration-300
+      group-hover:from-[#064B6D]/15
+      group-hover:to-[#07ABAB]/25
+    "
+  >
+    <Icon
+      icon="lucide:goal"
+      width={36}
+      height={36}
+      className="text-[#064B6D]"
+    />
+  </div>
+
+  {/* TEXT */}
+  <div className="flex flex-col justify-center px-4 py-3 md:px-5 md:py-3.5">
+    <h3 className="font-semibold text-sm md:text-[15px] text-[#034545] tracking-tight">
+      Operations feel fragmented
+    </h3>
+
+    <p className="mt-0.5 text-[10px] md:text-xs text-[#034545]/60 leading-relaxed">
+      We connect vessels, suppliers, and ports to keep operations moving smoothly.
+    </p>
+  </div>
+</div>
+
+
+{/* CARD 2 — SHIP CHANDLING */}
+<div
+  className="
+    group
+    relative
+    overflow-hidden
+    bg-white/95
+    rounded-2xl
+    flex items-stretch
+    border border-white/60
+    shadow-[0_8px_25px_rgba(3,69,69,0.10)]
+    transition-all duration-300
+    hover:-translate-y-1
+    hover:shadow-[0_14px_30px_rgba(3,69,69,0.16)]
+  "
+>
+  {/* GREEN ACCENT LINE */}
+  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#064B6D] to-[#07ABAB]" />
+
+  {/* ICON PANEL */}
+  <div
+    className="
+      shrink-0
+      w-16 md:w-[72px]
+      bg-gradient-to-br from-[#064B6D]/10 to-[#07ABAB]/20
+      flex items-center justify-center
+      border-r border-[#07ABAB]/10
+      transition-all duration-300
+      group-hover:from-[#064B6D]/15
+      group-hover:to-[#07ABAB]/25
+    "
+  >
+    <Icon
+      icon="fluent:savings-24-regular"
+      width={36}
+      height={36}
+      className="text-[#064B6D]"
+    />
+  </div>
+
+  {/* TEXT */}
+  <div className="flex flex-col justify-center px-4 py-3 md:px-5 md:py-3.5">
+    <h3 className="font-semibold text-sm md:text-[15px] text-[#034545] tracking-tight">
+      Operational costs keep adding up
+    </h3>
+
+    <p className="mt-0.5 text-[10px] md:text-xs text-[#034545]/60 leading-relaxed">
+      We streamline ship supply and sourcing to reduce unnecessary costs.
+    </p>
+  </div>
+</div>
+
+
+{/* CARD 3 — CONNECTIVITY */}
+<div
+  className="
+    group
+    relative
+    overflow-hidden
+    bg-white/95
+    rounded-2xl
+    flex items-stretch
+    border border-white/60
+    shadow-[0_8px_25px_rgba(3,69,69,0.10)]
+    transition-all duration-300
+    hover:-translate-y-1
+    hover:shadow-[0_14px_30px_rgba(3,69,69,0.16)]
+  "
+>
+  {/* GREEN ACCENT LINE */}
+  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#064B6D] to-[#07ABAB]" />
+
+  {/* ICON PANEL */}
+  <div
+    className="
+      shrink-0
+      w-16 md:w-[72px]
+      bg-gradient-to-br from-[#064B6D]/10 to-[#07ABAB]/20
+      flex items-center justify-center
+      border-r border-[#07ABAB]/10
+      transition-all duration-300
+      group-hover:from-[#064B6D]/15
+      group-hover:to-[#07ABAB]/25
+    "
+  >
+    <Icon
+      icon="icon-park-solid:connect-address-two"
+      width={36}
+      height={36}
+      className="text-[#064B6D]"
+    />
+  </div>
+
+  {/* TEXT */}
+  <div className="flex flex-col justify-center px-4 py-3 md:px-5 md:py-3.5">
+    <h3 className="font-semibold text-sm md:text-[15px] text-[#034545] tracking-tight">
+      Port calls create too much pressure
+    </h3>
+
+    <p className="mt-0.5 text-[10px] md:text-xs text-[#034545]/60 leading-relaxed">
+      We coordinate port, crew, and supplier needs when timing matters most.
+    </p>
+  </div>
+</div>
+
+  </div>
+</div>
+
 </section>
 
 
@@ -204,33 +449,145 @@ export default function Home() {
         </div>
 
         {reviews.slice(0, 4).map((r, i) => (
-          <div
-            key={i}
-            className={`relative z-10 bg-[#0a183e] text-white p-6 rounded-xl shadow-xl text-sm leading-relaxed min-h-[190px] flex flex-col gap-3
-            ${i % 2 === 0 ? "-rotate-2" : "rotate-2"}
-            `}
-          >
+  <div
+    key={i}
+    className={`
+      group
+      relative
+      z-10
+      overflow-hidden
+      min-h-[180px]
+      p-5 md:p-6
+      flex flex-col
+      gap-3
+      rounded-2xl
 
-            {/* STARS */}
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-6 h-6 bg-white flex items-center justify-center rounded-sm"
-                >
-                  <Icon icon="mdi:star" className="text-[#1e3a8a] text-xs" />
-                </div>
-              ))}
+      bg-[#0a183e]/90
+      backdrop-blur-md
+      border border-white/10
+
+      text-white
+
+      shadow-[0_12px_35px_rgba(10,24,62,0.20)]
+
+      transition-all duration-300
+      hover:-translate-y-1
+      hover:bg-[#0a183e]/95
+      hover:border-white/20
+      hover:shadow-[0_18px_40px_rgba(10,24,62,0.30)]
+
+      ${i % 2 === 0 ? "-rotate-1" : "rotate-1"}
+    `}
+  >
+
+    {/* SUBTLE NAVY GRADIENT */}
+    <div
+      className="
+        absolute
+        inset-0
+        pointer-events-none
+        bg-gradient-to-br
+        from-[#0a183e]
+        via-[#0a183e]/80
+        to-[#0a183e]/55
+      "
+    />
+
+    {/* ACCENT LINE */}
+    <div
+      className="
+        absolute
+        left-0
+        top-0
+        h-full
+        w-[3px]
+        bg-[#0a183e]
+        opacity-70
+      "
+    />
+
+    {/* SUBTLE LIGHT */}
+    <div
+      className="
+        absolute
+        -right-16
+        -top-16
+        w-32
+        h-32
+        rounded-full
+        bg-white/[0.04]
+        blur-2xl
+        pointer-events-none
+      "
+    />
+
+    {/* CONTENT */}
+    <div className="relative z-10 flex flex-col h-full gap-3">
+
+      {/* TOP ROW */}
+      <div className="flex items-center justify-between">
+
+        {/* STARS */}
+        <div className="flex gap-1">
+          {[...Array(5)].map((_, starIndex) => (
+            <div
+              key={starIndex}
+              className="
+                w-6 h-6
+                rounded-md
+                bg-white/[0.07]
+                border border-white/[0.08]
+                flex items-center justify-center
+              "
+            >
+              <Icon
+                icon="mdi:star"
+                width={13}
+                height={13}
+                className="text-white/70"
+              />
             </div>
+          ))}
+        </div>
 
-            <p>{r.text}</p>
+        {/* QUOTE */}
+        <Icon
+          icon="lucide:quote"
+          width={22}
+          height={22}
+          className="text-white/15"
+        />
+      </div>
 
-            <div className="text-xs opacity-80 mt-auto">
-              {r.author}
-            </div>
+      {/* REVIEW */}
+      <p
+        className="
+          text-xs md:text-sm
+          leading-relaxed
+          text-white/75
+          max-w-md
+        "
+      >
+        {r.text}
+      </p>
 
-          </div>
-        ))}
+      {/* AUTHOR */}
+      <div className="mt-auto pt-3 border-t border-white/10">
+        <p
+          className="
+            text-[10px] md:text-xs
+            font-medium
+            tracking-wide
+            text-white/45
+          "
+        >
+          {r.author}
+        </p>
+      </div>
+
+    </div>
+  </div>
+))}
 
       </div>
 
